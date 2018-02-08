@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -23,9 +24,11 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -106,12 +109,28 @@ public class MainActivity extends AppCompatActivity {
         List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         Imgproc.findContours(edges, contours, new Mat(), Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.CHAIN_APPROX_NONE);
 
+        Imgproc.drawContours(rgba, contours, 1, new Scalar(255, 0, 0), 1);
 
+
+        /*
         resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(edges, resultBitmap);
         nh = (int) (resultBitmap.getHeight() * (512.0 / resultBitmap.getWidth()));
         scaled = Bitmap.createScaledBitmap(resultBitmap, 512, nh, true);
+*/
+        resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(rgba, resultBitmap);
+        nh = (int) (resultBitmap.getHeight() * (512.0 / resultBitmap.getWidth()));
+        scaled = Bitmap.createScaledBitmap(resultBitmap, 512, nh, true);
+
+       // Imgproc.drawContours(edges2, contours, 1, new Scalar(255, 0, 0), 10);
+
+
+
         ((ImageView) findViewById(R.id.imageView4)).setImageBitmap(scaled);
+
+
+
 
         return a;
 
@@ -149,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.teste);
 
